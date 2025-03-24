@@ -22,7 +22,6 @@ import java.util.List;
 @SpringBootTest
 public class CartOfferApplicationTests {
 
-
 	@Test
 	public void checkFlatXForOneSegment() throws Exception {
 		List<String> segments = new ArrayList<>();
@@ -30,6 +29,53 @@ public class CartOfferApplicationTests {
 		OfferRequest offerRequest = new OfferRequest(1,"FLATX",10,segments);
 		boolean result = addOffer(offerRequest);
 		Assert.assertEquals(result,true); // able to add offer
+	}
+
+
+	@Test
+	public void checkFlatXPercentForOneSegment() throws Exception {
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX%",10,segments);
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+	}
+
+	@Test
+	public void checkFlatXForTwoSegment() throws Exception {
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		segments.add("p2");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX",10,segments);
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+	}
+
+	@Test
+	public void checkFlatXForWrongOfferValue() throws Exception {
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX%",101,segments);  // if offer in flat x % it should be less than 100
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,false); // able to add offer
+	}
+
+	@Test
+	public void checkFlatXForWrongRestaurantID() throws Exception {
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		OfferRequest offerRequest = new OfferRequest(44444,"FLATX%",101,segments);  // if offer in flat x % it should be less than 100
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,false); // able to add offer
+	}
+
+	@Test
+	public void checkFlatXForWrongOfferType() throws Exception {
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX%ABC",101,segments);  // if offer in flat x % it should be less than 100
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,false); // able to add offer
 	}
 
 	public boolean addOffer(OfferRequest offerRequest) throws Exception {
@@ -65,4 +111,5 @@ public class CartOfferApplicationTests {
 		}
 		return true;
 	}
+
 }
